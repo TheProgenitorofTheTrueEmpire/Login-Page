@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Page</title>
+  <!-- Bootstrap CSS -->
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <style>
+    body, html {
+      height: 100%;
+      background-color: #fff;
+      margin: 0;
+    }
+    .login-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .login-form {
+      width: 90%;
+      max-width: 900px;
+      background-color: #f8f9fa;
+      padding: 4rem 3rem;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+    .form-control {
+      font-size: 1.3rem;
+      padding: 0.9rem 1.2rem;
+      border-radius: 10px;
+      border: 1.5px solid #ced4da;
+    }
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.3);
+    }
+    .btn-primary {
+      font-size: 1.4rem;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    h3 {
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      color: #212529;
+    }
+    #message {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      text-align: center;
+      min-height: 1.5em;
+      font-weight: 600;
+    }
+    /* Overlay to block page after 3 wrong attempts */
+    #overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.85);
+      color: white;
+      font-size: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 14px;
+      z-index: 10;
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+     .a1{
+       justify-content: center;
+       align-items: center;
+       display: flex;
+        
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <form class="login-form" id="loginForm" autocomplete="off">
+    <div class="a1">
+         <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2_5z67_9w_D7bU4LdQJy2ponyHEparph_07p0LK3j4askGjPAX-rG9DFwfqEK1IT3Q6o&usqp=CAU" alt="عکس یوزر " >
+    </div>
+   
+      
+    <div class="mb-4">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" placeholder="Enter your username" />
+    </div>
+    <div class="mb-5">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" placeholder="Enter your password" />
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Login</button>
+    <div id="message"></div>
+  </form>
+  <div id="overlay">Access blocked! You have used all your login attempts.</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const validUsername = "Amir";
+  const validPassword = "123456";
+  let attemptsLeft = 3;
+
+  const form = document.getElementById('loginForm');
+  const messageDiv = document.getElementById('message');
+  const overlay = document.getElementById('overlay');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const loginBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    if (attemptsLeft === 0) {
+      alert("Your access is blocked due to too many failed login attempts.");
+      return;
+    }
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (username === validUsername && password === validPassword) {
+      messageDiv.style.color = "green";
+      messageDiv.textContent = "Login successful! Welcome.";
+      alert("Login successful!");
+      // Optionally, redirect or reset attempts here
+      // attemptsLeft = 3; // reset if you want
+    } else {
+      attemptsLeft--;
+      if (attemptsLeft > 0) {
+        messageDiv.style.color = "red";
+        messageDiv.textContent = `Incorrect username or password. You have ${attemptsLeft} attempt${attemptsLeft > 1 ? 's' : ''} left.`;
+        alert(`Incorrect username or password.\nYou have ${attemptsLeft} attempt${attemptsLeft > 1 ? 's' : ''} left.`);
+      } else {
+        messageDiv.style.color = "red";
+        messageDiv.textContent = "Access blocked! You have used all your login attempts.";
+        alert("You have used all 3 attempts. Access is now blocked.");
+        blockAccess();
+      }
+    }
+  });
+
+  function blockAccess() {
+    usernameInput.disabled = true;
+    passwordInput.disabled = true;
+    loginBtn.disabled = true;
+    overlay.style.display = "flex";
+  }
+</script>
+
+</body>
+</html>
